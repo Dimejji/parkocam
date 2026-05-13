@@ -4,6 +4,27 @@ import { ref, onMounted } from "vue";
 const drawer = ref(true);
 const currentTime = ref("");
 
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+const currentRouteTitle = computed(() => {
+  const path = route.path.toLowerCase();
+
+  if (path === "/entrygate" || path.includes("entrygate")) {
+    return "ENTRY GATE";
+  }
+  if (path === "/activesession" || path.includes("activesession")) {
+    return "ACTIVE SESSIONS";
+  }
+  if (path === "/exitgate" || path.includes("exitgate")) {
+    return "EXIT GATE";
+  }
+  // Add more pages as needed
+  return "Park-O-cam"; // fallback
+});
+
 // ================== TIME LOGIC ==================
 const updateTime = () => {
   const now = new Date();
@@ -79,11 +100,11 @@ onMounted(() => {
             to="/exitgate"
           />
 
-          <v-list-item
+          <!-- <v-list-item
             title="Session Details"
             prepend-icon="mdi-file-document-outline"
             to="/sessiondetails"
-          />
+          /> -->
 
           <v-list-item
             title="Payment & Billing"
@@ -135,16 +156,18 @@ onMounted(() => {
         class="custom-topbar border-b border-zinc-700"
       >
         <div class="d-flex align-center w-100 px-2 px-sm-4">
-          <!-- LEFT -->
+          <!-- LEFT: Menu Button -->
           <v-btn v-if="!drawer" icon @click="drawer = true" class="ml-2">
             <v-icon>mdi-menu</v-icon>
           </v-btn>
 
-          <!-- CENTER -->
+          <!-- CENTER: Dynamic Title -->
           <div
             class="flex-grow-1 d-flex flex-column align-center justify-center text-center"
           >
-            <div class="font-bold text-lg md:text-2xl">ENTRY GATE</div>
+            <div class="font-bold text-lg md:text-2xl">
+              {{ currentRouteTitle }}
+            </div>
 
             <div
               class="font-mono text-primary tabular-nums"
@@ -154,7 +177,7 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- RIGHT: Notification Bells -->
+          <!-- RIGHT: Notification -->
           <div class="d-flex align-center">
             <v-btn icon variant="text" color="amber" size="large">
               <v-icon>mdi-bell</v-icon>

@@ -1,15 +1,12 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import CreateSession from "../components/createsession.vue";
 
-const plateNumber = ref("L6 455 KJA");
-const entryTime = ref("09/12/2026 02:30 PM");
-const assignedSlot = ref("B-12");
-const note = ref("");
+const router = useRouter();
 
 const createSession = () => {
-  alert(
-    "✅ Entry Session Created Successfully!\n\nPlate: L6 455 KJA\nSlot: B-12",
-  );
+  router.push("/create-session");
 };
 </script>
 
@@ -122,6 +119,7 @@ const createSession = () => {
         :class="$vuetify.display.smAndDown ? 'pa-3 pt-0' : 'pa-6 pt-0'"
       >
         <v-row>
+          <!-- CREATE SESSION BUTTON -->
           <v-col cols="12">
             <v-btn
               color="primary"
