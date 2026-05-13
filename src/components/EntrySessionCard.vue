@@ -13,13 +13,28 @@ const createSession = () => {
 };
 </script>
 
+<style scoped>
+.custom-card {
+  background-color: #111827 !important;
+}
+.custom-primary-btn {
+  background-color: rgb(59 130 246) !important; /* Light Primary (blue-500) */
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.custom-primary-btn:hover {
+  background-color: rgb(37 99 235);
+}
+</style>
+
 <template>
   <v-col
     cols="12"
     md="6"
     :class="$vuetify.display.mdAndUp ? 'pl-3 ml-16' : 'px-0'"
   >
-    <v-card class="h-full" variant="elevated">
+    <v-card class="h-full custom-card" variant="elevated">
       <v-card-title
         :class="$vuetify.display.smAndDown ? 'text-xl py-3' : 'text-3xl py-4'"
         class="text-center font-bold text-gray-100"
@@ -41,7 +56,7 @@ const createSession = () => {
               density="comfortable"
               hide-details
               placeholder="L6 455 KJA"
-              bg-color="rgb(24 24 27)"
+              bg-color="#111827"
             />
           </v-col>
 
@@ -54,7 +69,7 @@ const createSession = () => {
               density="comfortable"
               hide-details
               placeholder="09/12/2026 02:30 PM"
-              bg-color="rgb(24 24 27)"
+              bg-color="#111827"
             />
           </v-col>
 
@@ -85,7 +100,7 @@ const createSession = () => {
               density="comfortable"
               hide-details
               placeholder="B-12"
-              bg-color="rgb(24 24 27)"
+              bg-color="#111827"
             />
           </v-col>
 
@@ -112,6 +127,8 @@ const createSession = () => {
               color="primary"
               size="x-large"
               block
+              variant="elevated"
+              class="custom-primary-btn"
               :class="
                 $vuetify.display.smAndDown
                   ? 'text-base py-5'

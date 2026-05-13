@@ -4,15 +4,20 @@ import EntriesToday from "../components/EntriesToday.vue";
 import ParkingCapacity from "../components/ParkingCapacity.vue";
 import EntrySessionCard from "../components/EntrySessionCard.vue";
 
-const currentTime = ref("");
-const drawer = ref(true)
+const drawer = ref(true);
 const videoRef = ref(null);
 const cameraConnected = ref(false);
+const currentTime = ref("");
 
 let stream = null;
 
 const startCamera = async () => {
   try {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      stream = null;
+    }
+
     stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: false,
@@ -32,7 +37,15 @@ const startCamera = async () => {
 const stopCamera = () => {
   if (stream) {
     stream.getTracks().forEach((track) => track.stop());
+    stream = null;
   }
+
+  //: release video element too
+  if (videoRef.value) {
+    videoRef.value.srcObject = null;
+  }
+
+  cameraConnected.value = false;
 };
 
 onMounted(() => {
@@ -70,79 +83,17 @@ onMounted(() => {
 
 <template>
   <v-container fluid class="pa-0 pa-sm-4 pa-md-6 h-full">
-    <!-- Top Bar -->
-    <v-app-bar
-      color="surface"
-      elevation="4"
-      class="border-b border-zinc-700"
-      :height="$vuetify.display.smAndDown ? 56 : 64"
-    >
-      <div class="flex items-center gap-3 px-2 px-sm-4 w-full">
-
-        <!-- Logo -->
-        <v-avatar color="primary" :size="$vuetify.display.smAndDown ? 36 : 48">
-          <span
-            :class="$vuetify.display.smAndDown ? 'text-xl' : 'text-3xl'"
-            class="font-bold text-white"
-          >
-            P
-          </span>
-        </v-avatar>
-
-        <!-- Menu Button -->
-        <v-btn
-          v-if="!drawer"
-          icon
-          @click="drawer = true"
-        >
-          <v-icon>mdi-menu</v-icon>
-        </v-btn>
-
-        <!-- Spacer -->
-        <v-spacer />
-
-        <!-- Title -->
-        <v-toolbar-title
-          class="font-bold tracking-tight text-center"
-          :class="$vuetify.display.smAndDown ? 'text-lg' : 'text-3xl'"
-        >
-          ENTRY GATE
-        </v-toolbar-title>
-
-        <!-- Spacer -->
-        <v-spacer />
-
-        <!-- Time + Notification -->
-        <div class="flex items-center gap-4">
-          <div
-            :class="$vuetify.display.smAndDown ? 'text-sm' : 'text-2xl'"
-            class="font-mono tabular-nums text-primary"
-          >
-            {{ currentTime }}
-          </div>
-
-          <v-btn
-            icon
-            variant="text"
-            :size="$vuetify.display.smAndDown ? 'small' : 'large'"
-          >
-            <v-icon icon="mdi-bell" color="warning" />
-          </v-btn>
-        </div>
-
-      </div>
-    </v-app-bar>
-
     <!-- Main Content Area -->
     <v-row
       no-gutters
       class="mt-2 mt-sm-4"
-      :style="$vuetify.display.smAndDown ? '' : 'min-height: calc(100vh - 120px)'"
+      :style="
+        $vuetify.display.smAndDown ? '' : 'min-height: calc(100vh - 120px)'
+      "
     >
       <v-col cols="12">
         <div class="max-w-[1460px] mx-auto w-full px-2 px-sm-0">
           <v-row :no-gutters="$vuetify.display.smAndDown">
-
             <!-- Left Panel -->
             <v-col
               cols="12"
@@ -156,7 +107,9 @@ onMounted(() => {
                 variant="outlined"
                 :max-width="$vuetify.display.smAndDown ? '100%' : 400"
               >
-                <v-card-title class="d-flex align-center gap-2 flex-wrap text-sm">
+                <v-card-title
+                  class="d-flex align-center gap-2 flex-wrap text-sm"
+                >
                   <v-icon icon="mdi-video" />
                   <span>LIVE CAMERA FEED</span>
                   <v-spacer />
@@ -202,7 +155,6 @@ onMounted(() => {
             >
               <EntriesToday />
             </v-col>
-
           </v-row>
         </div>
       </v-col>
