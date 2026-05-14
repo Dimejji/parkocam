@@ -1,84 +1,90 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
+import { components } from "vuetify/dist/vuetify.js";
 
-import Dashboard from '../views/Dashboard.vue'
-import EntryGate from '../views/EntryGate.vue'
-import ActiveSession from '../views/ActiveSession.vue'
-import ExitGate from '../views/ExitGate.vue'
-import SessionDetails from '../views/SessionDetails.vue'
-import PaymentBilling from '../views/PaymentBilling.vue'
-import AdminDashboard from '../views/AdminDashboard.vue'
-import SpaceMaps from '../views/SpaceMaps.vue'
-import QrBackup from '../views/QrBackup.vue'
-import Alert from '../views/Alert.vue'
-import Settings from '../views/Settings.vue'
-import { components } from 'vuetify/dist/vuetify.js'
+import Dashboard from "../views/Dashboard.vue";
+import EntryGate from "../views/EntryGate.vue";
+import createsession from "../components/createsession.vue";
+import ActiveSession from "../views/ActiveSession.vue";
+import ExitGate from "../views/ExitGate.vue";
+import SessionDetails from "../views/SessionDetails.vue";
+import PaymentBilling from "../views/PaymentBilling.vue";
+import AdminDashboard from "../views/AdminDashboard.vue";
+import SpaceMaps from "../views/SpaceMaps.vue";
+import QrBackup from "../views/QrBackup.vue";
+import Alert from "../views/Alert.vue";
+import Settings from "../views/Settings.vue";
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     component: Dashboard,
 
     children: [
       {
-        path: '',
-        redirect: '/entrygate',
+        path: "",
+        redirect: "/entrygate",
       },
       {
-        path: 'entrygate',           // ← This was missing
-        name: 'EntryGate',
+        path: "entrygate", // ← This was missing
+        name: "EntryGate",
         component: EntryGate,
       },
       {
-        path: '/activesession',
+        path: "/create-session",
+        name: "CreateSession",
+        component: createsession,
+      },
+      {
+        path: "/activesession",
         component: ActiveSession,
       },
 
       {
-        path: '/exitgate',
+        path: "/exitgate",
         component: ExitGate,
       },
 
       {
-        path: '/sessiondetails',
+        path: "/sessiondetails",
         component: SessionDetails,
       },
 
       {
-        path: '/paymentbilling',
+        path: "/paymentbilling",
         component: PaymentBilling,
       },
 
       {
-        path: '/admindashboard',
+        path: "/admindashboard",
         component: AdminDashboard,
       },
 
       {
-        path: '/spacemaps',
+        path: "/spacemaps",
         component: SpaceMaps,
       },
 
       {
-        path: '/qrbackup',
+        path: "/qrbackup",
         component: QrBackup,
       },
 
       {
-        path: '/alert',
+        path: "/alert",
         component: Alert,
       },
 
       {
-        path: '/settings',
+        path: "/settings",
         component: Settings,
       },
     ],
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-})
+});
 
-export default router
+export default router;
