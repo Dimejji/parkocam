@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import CreateSession from "../components/createsession.vue";
 
 const router = useRouter();
-
+const plateNumber = ref("");
 const createSession = () => {
   router.push("/create-session");
 };

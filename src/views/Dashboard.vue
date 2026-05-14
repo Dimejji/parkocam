@@ -106,11 +106,11 @@ onMounted(() => {
             to="/sessiondetails"
           /> -->
 
-          <v-list-item
+          <!-- <v-list-item
             title="Payment & Billing"
             prepend-icon="mdi-cash-multiple"
             to="/paymentbilling"
-          />
+          /> -->
 
           <v-list-item
             title="Admin Dashboard"

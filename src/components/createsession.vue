@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import SessionPayment from "./SessionPayment.vue";
 
 const router = useRouter();
 const emit = defineEmits(["close"]);
@@ -42,9 +43,13 @@ const auditTrail = ref([
   },
 ]);
 
+const paymentDialog = ref(false);
+
 const saveChanges = () => {
-  alert("✅ Changes saved successfully!");
-  emit("close");
+  // your save logic here
+
+  // open payment modal
+  paymentDialog.value = true;
 };
 
 const voidSession = () => {
@@ -160,12 +165,26 @@ const goBack = () => {
               <v-btn
                 color="primary"
                 size="large"
-                class="flex-1 text-base font-medium"
+                class="flex-1 text-base font-medium mr-5"
                 @click="saveChanges"
               >
                 <v-icon left>mdi-content-save</v-icon>
                 SAVE CHANGES
               </v-btn>
+              <!-- Payment Popup Modal -->
+              <v-dialog v-model="paymentDialog" max-width="700">
+                <v-card class="rounded-xl">
+                  <v-card-text class="pa-0">
+                    <SessionPayment />
+                  </v-card-text>
+
+                  <v-card-actions class="justify-end pa-4">
+                    <v-btn variant="text" @click="paymentDialog = false">
+                      Close
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
 
               <v-btn
                 color="error"

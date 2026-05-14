@@ -25,7 +25,7 @@ const routes = [
         redirect: "/entrygate",
       },
       {
-        path: "entrygate", // ← This was missing
+        path: "entrygate",
         name: "EntryGate",
         component: EntryGate,
       },

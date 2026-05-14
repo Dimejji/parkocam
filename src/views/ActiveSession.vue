@@ -1,9 +1,14 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useSessionStore } from "@/stores/sessionStore";
+
+const store = useSessionStore();
 
 const currentTime = ref("");
 const search = ref("");
+let interval;
 
+// table headers
 const headers = [
   { title: "PLATE", key: "plate" },
   { title: "ENTRY TIME", key: "entryTime" },
@@ -14,51 +19,37 @@ const headers = [
   { title: "ACTION", key: "action", sortable: false },
 ];
 
-const sessions = ref([
-  {
-    plate: "KSJ 990 BH",
-    entryTime: "12:09:30",
-    duration: "1:19:30",
-    slot: "A-03",
-    amount: "$2,500.00",
-    status: "ACTIVE",
-    statusColor: "success",
-  },
-  {
-    plate: "KSJ 990 BH",
-    entryTime: "12:09:30",
-    duration: "1:19:30",
-    slot: "A-03",
-    amount: "$2,500.00",
-    status: "ACTIVE",
-    statusColor: "success",
-  },
-  {
-    plate: "KSJ 990 BH",
-    entryTime: "12:09:30",
-    duration: "1:19:30",
-    slot: "A-03",
-    amount: "$2,500.00",
-    status: "OVERSTAYED",
-    statusColor: "error",
-  },
-  // Add more rows as needed
-]);
+// reactive mapped sessions (from Pinia store)
+const sessions = computed(() =>
+  store.sessions.map((s) => ({
+    plate: s.plateNumber,
+    entryTime: new Date(s.paidAt).toLocaleTimeString(),
+    duration: "-",
+    slot: "-",
+    amount: "-",
+    status: s.status,
+    statusColor: s.status === "Paid" ? "success" : "warning",
+  })),
+);
 
-let interval;
-
+// clock logic
 const updateTime = () => {
   const now = new Date();
+
   let h = now.getHours();
   const m = now.getMinutes().toString().padStart(2, "0");
   const s = now.getSeconds().toString().padStart(2, "0");
   const ampm = h >= 12 ? "PM" : "AM";
+
   h = h % 12 || 12;
 
   currentTime.value = `${h}:${m}:${s} ${ampm}`;
 };
 
+// lifecycle
 onMounted(() => {
+  store.loadFromStorage();
+
   updateTime();
   interval = setInterval(updateTime, 1000);
 });
@@ -178,12 +169,7 @@ onUnmounted(() => {
               style="max-width: 280px"
             ></v-text-field>
 
-            <v-btn
-              color="primary"
-              class="px-5"
-              variant="elevated 
-            "
-            >
+            <v-btn color="primary" class="px-5" variant="elevated">
               EXPORT CSV
             </v-btn>
           </div>

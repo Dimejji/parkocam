@@ -1,9 +1,14 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import tailwindcss from '@tailwindcss/vite'
-import vuetify from 'vite-plugin-vuetify'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import tailwindcss from "@tailwindcss/vite";
+import vuetify from "vite-plugin-vuetify";
+import { fileURLToPath, URL } from "node:url";
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), tailwindcss(),vuetify() ],
-})
+  plugins: [vue(), tailwindcss(), vuetify()],
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});
